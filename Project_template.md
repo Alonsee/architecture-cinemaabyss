@@ -115,6 +115,7 @@ jobs:
 #### Шаг 1
 Для деплоя в kubernetes необходимо залогиниться в docker registry Github'а.
 1. Создайте Personal Access Token (PAT) https://github.com/settings/tokens . Создавайте class с правом read:packages
+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
 2. В src/kubernetes/*.yaml (event-service, monolith, movies-service и proxy-service)  отредактируйте путь до ваших образов 
 ```bash
  spec:
