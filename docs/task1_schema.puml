@@ -1,0 +1,48 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Диаграмма контейнеров сервиса КиноБездна
+
+Person(user, "Пользователь", "Пользователь системы КиноБездна")
+
+System(cinemaAbyssSystem, "Система КиноБездна")
+
+Container_Boundary(cinemaAbyssSystem, "Система 'КиноБездна'") {
+    Container(apiGateway, "API Gateway", "reverse proxy", "Распределяет запросы по сервисам")
+    Container(authService, "Сервис авторизации", "", "Авторизация пользователей")
+    ContainerDb(authDb, "БД сервиса авторизации", "PostgreSQL", "Хранение учетных записей пользователей")
+    Container(profileService, "Сервис профиля пользователя", "java", "Управление данными пользователя (плейлисты, покупки, подписки)")
+    ContainerDb(profileDb, "БД профиля пользователя", "PostgreSQL", "Хранение данных профиля")
+    Container(paymentService, "Сервис платежей", "java", "Обрабратывает платежи пользователей, взаимодействует с внешней платёжной системой")
+    Container(recommendationsService, "Сервис рекоммендаций", "java", "Обрабратывает запросы рекоммендаций для пользователя")
+    Container(videoService, "Сервис видео", "java", "Отвечает за просмотр видео")
+    Container(messageBroker, "Брокер сообщений", "Apache Kafka")
+    Container(metadataService, "Сервис метаданных о фильмах", "java", "Управление метаданными фильмов")
+    ContainerDb(metadataDb, "БД метаданных о фильмах", "PostgreSQL", "Хранение метаданных фильмов")
+}
+
+System_Ext(recommendationsSystem, "Система рекомендаций")
+System_Ext(paymentSystem, "Внешняя платёжная система")
+System_Ext(onlineCinema, "Онлайн кинотеатры")
+
+Rel(user, apiGateway, "Использует систему (мобильные устройства, ноутбуки, смарт ТВ)")
+Rel(apiGateway, authService, "Запросы авторизации/регистрации")
+Rel(authService, authDb, "Получение данных авторизации/Регистрация новых пользователей")
+Rel(metadataService, metadataDb, "Чтение/запись метаданных фильмов")
+Rel(profileService, profileDb, "Чтение/запись данных профиля")
+Rel(apiGateway, profileService, "Запросы, относящиеся к профилю")
+Rel(profileService, messageBroker, "Оценки пользователя")
+Rel(messageBroker, metadataService, "Оценки пользователя")
+Rel(profileService, messageBroker, "Оплата покупок и подписок")
+Rel(messageBroker, paymentService, "Оплата покупок и подписок")
+Rel(paymentService, paymentSystem, "Платежи пользователей")
+Rel(apiGateway, recommendationsService, "Запрос рекомендаций для пользователя")
+Rel(recommendationsService, profileService, "Запрос данных профиля для рекомендаций")
+Rel(recommendationsService, messageBroker, "Запрос рекомендаций")
+Rel(messageBroker, recommendationsSystem, "Запрос рекомендаций")
+Rel(videoService, profileService, "Запрос данных о покупках и подписках")
+Rel(videoService, onlineCinema, "Запрос видео для просмотра")
+Rel(apiGateway, videoService, "Запрос видео для просмотра")
+Rel(metadataService, onlineCinema, "Запрос метаданных фильмов, обновление каталога")
+
+@enduml

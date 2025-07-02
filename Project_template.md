@@ -5,7 +5,7 @@
 1. Спроектируйте to be архитектуру КиноБездны, разделив всю систему на отдельные домены и организовав интеграционное взаимодействие и единую точку вызова сервисов.
 Результат представьте в виде контейнерной диаграммы в нотации С4.
 Добавьте ссылку на файл в этот шаблон
-[ссылка на файл](ссылка)
+   Скриншоты расположены в директории docs
 
 # Задание 2
 
@@ -115,6 +115,7 @@ jobs:
 #### Шаг 1
 Для деплоя в kubernetes необходимо залогиниться в docker registry Github'а.
 1. Создайте Personal Access Token (PAT) https://github.com/settings/tokens . Создавайте class с правом read:packages
+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
 2. В src/kubernetes/*.yaml (event-service, monolith, movies-service и proxy-service)  отредактируйте путь до ваших образов 
 ```bash
  spec:
@@ -274,7 +275,7 @@ cat .docker/config.json | base64
 
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
-
+Скриншоты расположены в директории screenshots/task3
 
 # Задание 4
 Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу 
@@ -349,6 +350,8 @@ minikube tunnel
 Потом вызовите 
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
+
+Скриншоты расположены в директории screenshots/task4
 
 ## Удаляем все
 
